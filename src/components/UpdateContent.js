@@ -1,0 +1,60 @@
+import React, {Component} from 'react';
+
+class UpdateContent extends Component{
+  constructor(props){
+    super(props);
+    this.state = {
+      id:this.props.data.id,
+      title:this.props.data.title,
+      desc:this.props.data.desc
+    }
+    this.inputFormHandler = this.inputFormHandler.bind(this);
+  }
+  inputFormHandler(e){
+    this.setState({[e.target.name]:e.target.value});
+  }
+    render(){
+      console.log(this.props.data);
+      console.log('UpdateContent render');
+      return(
+        <article>
+          <h2>Update</h2>
+          <form action="/create_process" method="post"
+            onSubmit={function(e){
+              e.preventDefault(); // 페이지 전환이 되지 않도록 함
+              this.props.onSubmit(
+                this.state.id,
+                this.state.title,
+                this.state.desc
+              );
+            }.bind(this)} 
+            // onSubmit은 HTML의 문법으로, "이벤트"에 해당함!
+          >
+            <input type="hidden" name="id" value={this.state.id}></input>
+            <p>
+              <input 
+                type="text" 
+                name="title" 
+                placeholder="title"
+                value={this.state.title}
+                onChange={this.inputFormHandler}
+              ></input>
+              </p>
+            <p>
+              <textarea 
+                name="desc" 
+                placeholder="description" 
+                value={this.state.desc}
+                onChange={this.inputFormHandler}
+              ></textarea>
+            </p>
+            <p>
+              <input type="submit" value="제출하기"></input>
+            </p>
+          </form>
+        </article>
+      );
+    }
+  }
+
+  export default UpdateContent;
